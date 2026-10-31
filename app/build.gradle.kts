@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "ru.anton2319.vpnoverssh"
-    compileSdk = 36
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "ru.anton2319.vpnoverssh"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0.0"
     }
@@ -38,33 +38,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
-}
-
-tasks.register<Exec>("buildWebAssets") {
-    workingDir = rootDir
-    commandLine("npm", "run", "build")
-    doLast {
-        copy {
-            from("${rootDir}/dist")
-            into("${projectDir}/src/main/assets/web")
-        }
-    }
-}
-
-tasks.named("preBuild") {
-    dependsOn("buildWebAssets")
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.webkit:webkit:1.12.1")
+    implementation("androidx.core:core-ktx:1.10.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.webkit:webkit:1.7.0")
 }

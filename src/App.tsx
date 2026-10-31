@@ -203,6 +203,19 @@ export function App() {
         setIsEditingServer(false);
         setCurrentTab('home');
       }}
+      bottomBar={
+        <BottomNavBar
+          currentTab={currentTab}
+          onChangeTab={(tab) => {
+            if (tab === 'menu') {
+              setIsMenuOpen(true);
+            } else {
+              setIsEditingServer(false);
+              setCurrentTab(tab);
+            }
+          }}
+        />
+      }
     >
       {/* Toast Notice */}
       {toastMessage && (
@@ -215,14 +228,14 @@ export function App() {
       {/* Floating Log Console toggle icon */}
       <button
         onClick={() => setShowLogs((prev) => !prev)}
-        className="absolute bottom-16 right-3 z-30 p-2.5 rounded-full bg-[#0a1b11] border border-emerald-800 text-[#00E676] shadow-lg hover:bg-emerald-950 transition"
+        className="fixed sm:absolute bottom-20 right-4 z-30 p-2.5 rounded-full bg-[#0a1b11] border border-emerald-800 text-[#00E676] shadow-lg hover:bg-emerald-950 transition"
         title="เปิด Console ดู Logs"
       >
         <Terminal className="w-4 h-4" />
       </button>
 
       {/* Main Screen Content */}
-      <div className="flex-1 px-4 py-2 overflow-y-auto">
+      <div className="w-full">
         {isEditingServer ? (
           <NewConnectionScreen
             editingProfile={editingServerProfile}
@@ -303,19 +316,6 @@ export function App() {
           </>
         )}
       </div>
-
-      {/* Bottom 4-Tab Navigation Bar */}
-      <BottomNavBar
-        currentTab={currentTab}
-        onChangeTab={(tab) => {
-          if (tab === 'menu') {
-            setIsMenuOpen(true);
-          } else {
-            setIsEditingServer(false);
-            setCurrentTab(tab);
-          }
-        }}
-      />
 
       {/* Slide-out Menu Drawer (Screen 6) */}
       <MenuDrawer

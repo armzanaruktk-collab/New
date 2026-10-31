@@ -10,7 +10,7 @@ interface BottomNavBarProps {
 
 export const BottomNavBar: React.FC<BottomNavBarProps> = ({ currentTab, onChangeTab }) => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 bg-[#07130b]/95 backdrop-blur-md border-t border-emerald-950/80 px-4 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+    <nav className="w-full bg-[#07130b]/95 backdrop-blur-md border-t border-emerald-950/80 px-4 py-1.5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] shrink-0 z-30">
       <div className="max-w-md mx-auto grid grid-cols-4 gap-1">
         {/* Tab 1: หน้าหลัก */}
         <button
