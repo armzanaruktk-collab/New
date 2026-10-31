@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Kanit', sans-serif;
+    background-color: #060e09;
+    color: #e2f1e6;
+    background-image: 
+      radial-gradient(circle at 15% 20%, rgba(0, 230, 118, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 85% 35%, rgba(0, 200, 83, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 50% 85%, rgba(0, 230, 118, 0.15) 0%, transparent 50%),
+      linear-gradient(180deg, #07150c 0%, #030805 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+/* Bokeh Bubbles overlay */
+.bubble-bg {
+  background-image: 
+    radial-gradient(circle at 20% 15%, rgba(0, 230, 118, 0.18) 0px, transparent 18px),
+    radial-gradient(circle at 75% 22%, rgba(0, 230, 118, 0.12) 0px, transparent 24px),
+    radial-gradient(circle at 88% 60%, rgba(0, 230, 118, 0.14) 0px, transparent 32px),
+    radial-gradient(circle at 10% 70%, rgba(0, 230, 118, 0.15) 0px, transparent 28px);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09130d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #193822;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00e676;
+}

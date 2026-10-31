@@ -1,0 +1,8 @@
+{
+  "name": "VPN over SSH",
+  "description": "Android-to-React rewrite of VPN over SSH (godarmxvpn) with SSH server profiles, HTTP CONNECT payload manager, and SOCKS5 VPN tunneling.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
