@@ -38,13 +38,12 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
       },
-      devOptions: {
-        enabled: true,
-      },
     }),
   ],
   server: {
     host: '0.0.0.0',
     port: 3000,
+    hmr: false,
+    ws: false,
   },
 });

@@ -9,6 +9,8 @@ import { ConnectingModal } from './components/ConnectingModal';
 import { LogsConsole } from './components/LogsConsole';
 import { HelpModal } from './components/HelpModal';
 import { ApkBuildModal } from './components/ApkBuildModal';
+import { QRScannerModal } from './components/QRScannerModal';
+import { QRCodeGeneratorModal } from './components/QRCodeGeneratorModal';
 import { AndroidPhoneFrame } from './components/AndroidPhoneFrame';
 import { storage } from './services/storage';
 import { vpnTunnelEngine } from './services/vpnTunnelEngine';
@@ -28,6 +30,8 @@ export function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showConnectingModal, setShowConnectingModal] = useState(false);
   const [showApkModal, setShowApkModal] = useState(false);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [showQRGenerator, setShowQRGenerator] = useState(false);
   const [isEditingServer, setIsEditingServer] = useState(false);
   const [editingServerProfile, setEditingServerProfile] = useState<SSHConnectionProfile | null>(null);
 
@@ -196,6 +200,24 @@ export function App() {
     showToast('บันทึกการตั้งค่าแล้ว');
   };
 
+  // QR Code Import Handler
+  const handleProfileScannedFromQR = (scannedProfile: SSHConnectionProfile) => {
+    storage.saveSSHProfile(scannedProfile);
+    const updated = storage.loadSSHProfiles();
+    setProfiles(updated);
+    setSelectedProfileId(scannedProfile.uuid);
+    if (scannedProfile.connectionMode) {
+      setConnectionMode(scannedProfile.connectionMode);
+    }
+    if (scannedProfile.payloadUuid) {
+      setActivePayloadId(scannedProfile.payloadUuid);
+    }
+    if (isEditingServer) {
+      setEditingServerProfile(scannedProfile);
+    }
+    showToast(`นำเข้าเซิร์ฟเวอร์ "${scannedProfile.displayName}" สำเร็จแล้ว`);
+  };
+
   return (
     <AndroidPhoneFrame
       status={connectionStatus}
@@ -250,6 +272,7 @@ export function App() {
               setIsEditingServer(false);
               setCurrentTab('payload');
             }}
+            onOpenQRScanner={() => setShowQRScanner(true)}
           />
         ) : (
           <>
@@ -275,6 +298,8 @@ export function App() {
                 onOpenPayloadTab={() => setCurrentTab('payload')}
                 onOpenApkModal={() => setShowApkModal(true)}
                 onOpenMenu={() => setIsMenuOpen(true)}
+                onOpenQRScanner={() => setShowQRScanner(true)}
+                onOpenQRGenerator={() => setShowQRGenerator(true)}
               />
             )}
 
@@ -328,6 +353,7 @@ export function App() {
         onOpenGuide={() => setShowGuide(true)}
         onOpenAbout={() => setShowAbout(true)}
         onOpenApkModal={() => setShowApkModal(true)}
+        onOpenQRGenerator={() => setShowQRGenerator(true)}
         status={connectionStatus}
         onExitServerSSH={handleDisconnect}
       />
@@ -346,6 +372,22 @@ export function App() {
       <ApkBuildModal
         isOpen={showApkModal}
         onClose={() => setShowApkModal(false)}
+      />
+
+      {/* QR Code Scanner Modal */}
+      <QRScannerModal
+        isOpen={showQRScanner}
+        onClose={() => setShowQRScanner(false)}
+        onProfileScanned={handleProfileScannedFromQR}
+        defaultPayloadUuid={activePayloadId}
+      />
+
+      {/* QR Code Generator Modal */}
+      <QRCodeGeneratorModal
+        isOpen={showQRGenerator}
+        onClose={() => setShowQRGenerator(false)}
+        profiles={profiles}
+        initialProfileId={selectedProfileId}
       />
 
       {/* Logs Console */}

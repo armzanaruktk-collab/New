@@ -9,7 +9,8 @@ import {
   X,
   Shield,
   Sun,
-  Share2
+  Share2,
+  QrCode
 } from 'lucide-react';
 import { TabType } from './BottomNavBar';
 import { ConnectionStatus } from '../types';
@@ -21,6 +22,7 @@ interface MenuDrawerProps {
   onOpenGuide: () => void;
   onOpenAbout: () => void;
   onOpenApkModal: () => void;
+  onOpenQRGenerator: () => void;
   status: ConnectionStatus;
   onExitServerSSH: () => void;
 }
@@ -32,6 +34,7 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
   onOpenGuide,
   onOpenAbout,
   onOpenApkModal,
+  onOpenQRGenerator,
   status,
   onExitServerSSH,
 }) => {
@@ -139,7 +142,19 @@ export const MenuDrawer: React.FC<MenuDrawerProps> = ({
             <span>เกี่ยวกับแอป</span>
           </button>
 
-          {/* 6. ติดตั้ง / Build APK */}
+          {/* 6. สร้าง / แชร์ QR Code เซิร์ฟเวอร์ */}
+          <button
+            onClick={() => {
+              onOpenQRGenerator();
+              onClose();
+            }}
+            className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-emerald-950/50 text-gray-200 hover:text-[#00E676] transition text-sm text-left"
+          >
+            <QrCode className="w-4 h-4 text-[#00E676]" />
+            <span>สร้าง / แชร์ QR Code</span>
+          </button>
+
+          {/* 7. ติดตั้ง / Build APK */}
           <button
             onClick={() => {
               onOpenApkModal();

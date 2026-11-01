@@ -17,7 +17,8 @@ import {
   Link2,
   Edit2,
   Circle,
-  CheckCircle
+  CheckCircle,
+  QrCode
 } from 'lucide-react';
 import {
   SSHConnectionProfile,
@@ -47,6 +48,8 @@ interface HomeScreenProps {
   onOpenPayloadTab: () => void;
   onOpenApkModal: () => void;
   onOpenMenu: () => void;
+  onOpenQRScanner: () => void;
+  onOpenQRGenerator: () => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
@@ -67,6 +70,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   onOpenPayloadTab,
   onOpenApkModal,
   onOpenMenu,
+  onOpenQRScanner,
+  onOpenQRGenerator,
 }) => {
   // Screen sub-mode: 'dashboard' (Screen 1 - หน้าหลัก) vs 'ssh_view' (Screen 2 - SSH)
   const [subView, setSubView] = useState<'dashboard' | 'ssh_view'>('dashboard');
@@ -104,10 +109,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <span className="text-white text-base">หน้าหลัก</span>
           </div>
 
-          <div className="flex items-center space-x-2.5 text-gray-300">
+          <div className="flex items-center space-x-2 text-gray-300">
+            <button
+              onClick={onOpenQRScanner}
+              className="flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-800/80 text-[10px] font-bold text-[#00E676] hover:bg-emerald-900 transition shadow-sm"
+              title="สแกน QR Code นำเข้าเซิร์ฟเวอร์"
+            >
+              <QrCode className="w-3 h-3" />
+              <span>สแกน QR</span>
+            </button>
             <button
               onClick={onOpenApkModal}
-              className="flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-800/80 text-[10px] font-bold text-[#00E676] hover:bg-emerald-900 transition shadow-sm"
+              className="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-800/80 text-[10px] font-bold text-gray-300 hover:text-white hover:bg-emerald-900 transition shadow-sm"
               title="ติดตั้ง / Build APK"
             >
               <Smartphone className="w-3 h-3" />
@@ -215,14 +228,33 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {currentProfile && (
           <div className="flex items-center justify-between text-[11px] text-gray-400 px-1 pt-0.5">
             <span>โฮสต์: <strong className="text-gray-200 font-mono">{currentProfile.serverIP}:{currentProfile.serverPort}</strong></span>
-            <button
-              onClick={() => onEditProfile(currentProfile)}
-              disabled={isConnected || isBusy}
-              className="text-[#00E676] hover:underline flex items-center space-x-1"
-            >
-              <Edit2 className="w-3 h-3" />
-              <span>แก้ไขเซิร์ฟเวอร์</span>
-            </button>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={onOpenQRGenerator}
+                className="text-[#00E676] hover:underline flex items-center space-x-1"
+                title="สร้าง QR Code เพื่อแชร์เซิร์ฟเวอร์นี้"
+              >
+                <Share2 className="w-3 h-3" />
+                <span>แชร์ QR</span>
+              </button>
+              <button
+                onClick={onOpenQRScanner}
+                disabled={isConnected || isBusy}
+                className="text-gray-300 hover:text-white flex items-center space-x-1"
+                title="สแกน QR Code นำเข้าเซิร์ฟเวอร์"
+              >
+                <QrCode className="w-3 h-3" />
+                <span>สแกน</span>
+              </button>
+              <button
+                onClick={() => onEditProfile(currentProfile)}
+                disabled={isConnected || isBusy}
+                className="text-gray-300 hover:text-white flex items-center space-x-1"
+              >
+                <Edit2 className="w-3 h-3" />
+                <span>แก้ไข</span>
+              </button>
+            </div>
           </div>
         )}
       </div>

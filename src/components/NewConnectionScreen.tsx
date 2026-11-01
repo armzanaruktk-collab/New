@@ -9,7 +9,8 @@ import {
   Server,
   FileCode,
   AlertCircle,
-  FileText
+  FileText,
+  QrCode
 } from 'lucide-react';
 import { SSHConnectionProfile, PayloadProfile, ConnectionMode } from '../types';
 import { formatKeyPreview } from '../utils/formatters';
@@ -21,6 +22,7 @@ interface NewConnectionScreenProps {
   onDelete?: (uuid: string) => void;
   onCancel: () => void;
   onManagePayloads: () => void;
+  onOpenQRScanner?: () => void;
 }
 
 export const NewConnectionScreen: React.FC<NewConnectionScreenProps> = ({
@@ -30,6 +32,7 @@ export const NewConnectionScreen: React.FC<NewConnectionScreenProps> = ({
   onDelete,
   onCancel,
   onManagePayloads,
+  onOpenQRScanner,
 }) => {
   const [displayName, setDisplayName] = useState('');
   const [serverIP, setServerIP] = useState('');
@@ -137,15 +140,28 @@ export const NewConnectionScreen: React.FC<NewConnectionScreenProps> = ({
           </h2>
         </div>
 
-        {editingProfile && onDelete && (
-          <button
-            onClick={() => onDelete(editingProfile.uuid)}
-            className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-950/40 transition"
-            title="ลบเซิร์ฟเวอร์นี้"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
-        )}
+        <div className="flex items-center space-x-2">
+          {onOpenQRScanner && (
+            <button
+              onClick={onOpenQRScanner}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-800 text-xs font-bold text-[#00E676] hover:bg-emerald-900 transition shadow-sm"
+              title="สแกน QR Code เพื่อกรอกข้อมูล"
+            >
+              <QrCode className="w-3.5 h-3.5" />
+              <span>สแกน QR</span>
+            </button>
+          )}
+
+          {editingProfile && onDelete && (
+            <button
+              onClick={() => onDelete(editingProfile.uuid)}
+              className="p-1.5 rounded-lg text-rose-400 hover:bg-rose-950/40 transition"
+              title="ลบเซิร์ฟเวอร์นี้"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
@@ -157,6 +173,26 @@ export const NewConnectionScreen: React.FC<NewConnectionScreenProps> = ({
 
       {/* Main Connection Form */}
       <div className="bg-[#0b1810] border border-emerald-900/60 rounded-2xl p-4 space-y-3.5 shadow-sm">
+        {/* Quick QR Auto-fill Banner */}
+        {onOpenQRScanner && (
+          <div
+            onClick={onOpenQRScanner}
+            className="flex items-center justify-between p-2.5 rounded-xl bg-[#07170e] border border-emerald-800/60 cursor-pointer hover:border-[#00E676] transition group"
+          >
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-lg bg-emerald-950/80 border border-emerald-700/60 flex items-center justify-center text-[#00E676] group-hover:scale-105 transition">
+                <QrCode className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-white block">สแกน QR Code นำเข้าอัตโนมัติ</span>
+                <span className="text-[10px] text-gray-400 block">กรอก Host, Port, User, รหัสผ่าน จาก QR Code</span>
+              </div>
+            </div>
+            <span className="text-[11px] font-bold text-[#00E676] px-2 py-1 rounded-lg bg-emerald-950/60 border border-emerald-800">
+              แตะเพื่อสแกน
+            </span>
+          </div>
+        )}
         {/* Name & Flag */}
         <div className="grid grid-cols-4 gap-2">
           <div className="col-span-3 space-y-1">
